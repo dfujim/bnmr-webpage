@@ -1,17 +1,8 @@
 ---
-title: About
+title: People
 layout: page
-permalink: /about/
+permalink: /people/
 ---
-
-BNMR is ...blah blah technique stuff. Inline math: $\omega = \gamma B_0$
-
-Out of line math: 
-
-$$
-\omega = \gamma B_0
-$$
-
 
 ## Principal Investigators
 
