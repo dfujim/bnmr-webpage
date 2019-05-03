@@ -2,6 +2,25 @@
 
 Backend files for the UBC's BNMR reserach group, led by Rober Kiefl and Andrew MacFarlane. 
 
+
+## Developer Notes
+
+### Running locally: 
+
+* In `bnmr-webpage`, run `jekell build`
+* In `bnmr-webpage/_site` run `jekell serve`
+
+### Pages 
+
+The following list the markdown files needed to format the various subpages of the site. 
+
+* [about](https://github.com/dfujim/bnmr-webpage/blob/master/about.md)
+* [archive](https://github.com/dfujim/bnmr-webpage/blob/master/archive.md)
+* [index](https://github.com/dfujim/bnmr-webpage/blob/master/index.md)
+* [publications](https://github.com/dfujim/bnmr-webpage/blob/master/publications.md)
+
+## Bibliography 
+
 Website design based on that of Ryan MacFadden: [rmlm.gitlab.io](https://rmlm.gitlab.io), which in turn cites the following: 
 
 The web design used here is based on Joseph Wright's blog
