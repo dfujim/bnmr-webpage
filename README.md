@@ -1,8 +1,8 @@
-# rmlm.gitlab.io
+# BNMR Group Website
 
-This is the source for my GitLab page [rmlm.gitlab.io](https://rmlm.gitlab.io).
-The the content and layout here are largely experimental and mainly a playground for
-me to try/learn some new things.
+Backend files for the UBC's BNMR reserach group, led by Rober Kiefl and Andrew MacFarlane. 
+
+Website design based on that of Ryan MacFadden: [rmlm.gitlab.io](https://rmlm.gitlab.io), which in turn cites the following: 
 
 The web design used here is based on Joseph Wright's blog
 [texdev.net](https://www.texdev.net/), whose source can be found on
