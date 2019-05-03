@@ -1,0 +1,25 @@
+<header>
+   <h1 class="project-name"><a href="/">{{ site.name }}</a></h1>
+   
+   <!--- MathJax -->
+   <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+         tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+         }
+      });
+   </script>
+   <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+   
+   <!--- include latest academicons -->
+   <link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css">
+   
+   <!--- include fontawesome -->
+   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+   
+   <!--- highlight code -->
+   <link href="/css/highlight.css" rel="stylesheet">
+   
+   {% include nav.html %}
+</header>

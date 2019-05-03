@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+   <meta charset="utf-8">
+   
+   <title>
+      
+         Hyperfine coupling units
+      
+   </title>
+   
+   
+   
+   <meta name="viewport" content="width=device-width">
+   
+   <link rel="stylesheet" href="/css/screen.css">
+   
+   <link rel="icon" type="image/x-icon" href="/favicon.ico">
+   
+</head>
+
+   <body class="container">
+      <header>
+   <h1 class="project-name"><a href="/"></a></h1>
+   
+   <!--- MathJax -->
+   <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+         tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+         }
+      });
+   </script>
+   <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+   
+   <!--- include latest academicons -->
+   <link rel="stylesheet" href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css">
+   
+   <!--- include fontawesome -->
+   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+   
+   <!--- highlight code -->
+   <link href="/css/highlight.css" rel="stylesheet">
+   
+   <nav>
+   <label for="show-menu" class="show-menu">Show Menu</label>
+   <input type="checkbox" id="show-menu" >
+   <ul>
+      <li>
+      <a href="/">Home</a></li>
+      
+      <li>
+      <a href="/about/">About</a></li>
+      
+      <li>
+      <a href="/archive/">Archive</a></li>
+      
+      <li>
+      <a href="/publications/">Publications</a></li>
+   </ul>
+</nav>
+
+</header>
+
+      <div class="wrap">
+         <h1>Hyperfine coupling units</h1>
+
+<p>This is a test of displaying math in html.
+The content is based on: W. A MacFarlane, “Hyperfine coupling in “kilogauss per µ<sub>B</sub>” (Mar. 2007).
+The original document can be found <a href="http://bnmr.triumf.ca/PDFs/hfc-units.pdf">here</a>.</p>
+
+<hr />
+
+<p>The hyperfine Hamiltonian is:</p>
+
+<script type="math/tex; mode=display">H_{\mathrm{hf}} = A_{12} \mathbf{S}_{1} \cdot \mathbf{S}_{2},</script>
+
+<p>where <script type="math/tex">\mathbf{S}_{i}</script> are the dimentionless spin operators (i.e., spin angular
+momentum operators divided by Planck’s constant), and <script type="math/tex">A_{12}</script> is the hyperfine
+coupling constant. Clearly, <script type="math/tex">A_{12}</script> has units of <em>energy</em>, so what the heck is
+the unit kG/µ<sub>B</sub> (or kOe/µ<sub>B</sub>) and why is it used?!</p>
+
+<p>In a nuclear magnetic resonance (NMR) experiment, if you measure a shift <script type="math/tex">K</script>
+in the resonance that is proportional to a susceptibility <script type="math/tex">\chi</script>, then the
+proportionality constant is also known as the hyperfine coupling <script type="math/tex">A</script>, which is
+related to the <script type="math/tex">A_{12}</script> above. Practically then, <script type="math/tex">K</script> is a <em>unitless</em> quantity
+(e.g., in ppm), and so too is <script type="math/tex">\chi</script>. This is easy to see since, for example,</p>
+
+<script type="math/tex; mode=display">M = χ H,</script>
+
+<p>and <script type="math/tex">M</script> and <script type="math/tex">H</script> have the same units. Of course, this is assuming we have the
+unitless “volume susceptibility” for <script type="math/tex">\chi</script> and not the per mole or per gram
+equivalents. If <script type="math/tex">K</script> and <script type="math/tex">\chi</script> are unitless in</p>
+
+<script type="math/tex; mode=display">K = A \chi,</script>
+
+<p>then so too must be the coupling <script type="math/tex">A</script>. This, perhaps, is not helping clear
+things up, but it is good to explore the extent of the confusion!</p>
+
+<p>To get the conventional hyperfine coupling in the units kG/μ<sub>B</sub>, we use
+instead</p>
+
+<script type="math/tex; mode=display">K = \frac{A \chi}{N_{A} \mu_{B}},</script>
+
+<p>where <script type="math/tex">N_{A}</script> is Avogadro’s number and <script type="math/tex">\mu_{B}</script> is the Bohr magneton (in
+erg/G), which is about half the magnetic moment of the electron. The susceptibility
+can then be defined in the following way. The magnetic moment <script type="math/tex">m</script> of a sample
+(containing <script type="math/tex">N</script> moles of the compound) is measured. This moment is in units of
+emu (i.e., in the cgs system of units). Note that the emu (no relation to the
+<a href="https://en.wikipedia.org/wiki/Emu">large flightless bird</a>) is a unit of magnetic
+moment equal to an erg per Gauss (or J/T in SI), so the “susceptibility”
+<script type="math/tex">χ_\mathrm{total} = m / H</script> has units of emu/G or erg/G/G (or J/T/T in SI).
+This is, of course, equal to units of volume, since the square of the magnetic
+field is just the magnetic energy density. The molar value is gotten just by
+dividing <script type="math/tex">χ_\mathrm{total}</script> by <script type="math/tex">N</script>. Doing this we get the molar
+susceptibility in emu/mol (<script type="math/tex">χ</script>). Thus, <script type="math/tex">A</script> has units of (erg/G per erg/G/G)
+or just G (i.e., it is a magnetic field), but, confusingly, one quotes this as a
+certain number of G (e.g., kG, etc.) “per μ<sub>B</sub>” because of the
+1/μ<sub>B</sub> in the expression for <script type="math/tex">K</script>. The <script type="math/tex">N_{A}</script> in this definition
+makes the resulting coupling an <em>atomic</em> quantity (i.e., per atom whose nucleus
+is coupled to the <script type="math/tex">χ</script>). If the atom in question is hyperfine coupled to <script type="math/tex">Z</script>
+equivalent near neighbours, it is often useful to divide <script type="math/tex">A</script> further by <script type="math/tex">Z</script>
+to get a hyperfine coupling per neighbouring atom.</p>
+
+
+      </div>
+   </body>
+   <footer>
+   <p>
+      <i class="fab fa-gitlab"></i> <a href="https://gitlab.com/rmlm">rmlm</a>
+      &nbsp | &nbsp
+      <i class="ai ai-arxiv"></i> <a href="https://arxiv.org/a/0000-0002-1389-2410.html">McFadden, R M L</a>
+      &nbsp | &nbsp
+      <i class="ai ai-orcid"></i> <a href="https://orcid.org/0000-0002-1389-2410">0000-0002-1389-2410</a>
+      <!---
+      <br/>
+      <br/>
+      Copyright © 2019 Ryan M. L. McFadden
+      -->
+   </p>
+</footer>
+
+<!--
+This webdesign is licensed under a Creative Commons Attribution 4.0 International License - http://creativecommons.org/licenses/by/4.0/.
+This design has been adapted from the work of Joseph Wright found at https://github.com/josephwright/josephwright.github.io for his blog https://www.texdev.net/.
+Joseph's work is based on the work at https://github.com/latex3/latex3.github.io by Jonas Jacek http://jonas.me/.
+-->
+
+</html>
