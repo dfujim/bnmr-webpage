@@ -25,7 +25,6 @@ url = (
     + status
 )
 
-
 expbaseurl = "https://mis.triumf.ca/science/experiment/view/"
 
 # get the page html
@@ -122,7 +121,7 @@ def fix_fmt(string):
 
 
 # write the list as a html table a file
-with open("_posts/triumf_experiments.html", "w") as fh:
+with open("_html/triumf_experiments.html", "w") as fh:
 
     # write the table
     fh.write(tabs(0) + "<center>\n")

@@ -8,7 +8,7 @@ BNMR experiments at [TRIUMF](https://www.triumf.ca/)
 
 ---
 
-{% include_relative _posts/triumf_experiments.html %}
+{% include_relative _html/triumf_experiments.html %}
 
 ---
 

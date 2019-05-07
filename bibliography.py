@@ -9,7 +9,8 @@ class bib_collection(object):
     """
         Holds all bib objects corresponding to a bibtex file
         
-        data: dictionary of bib objects
+        data:   dictionary of bib objects
+        kind:   type of entries contained: article, proceeding, thesis, etc.
     """
     
     def __init__(self,bibfile,notes=''):
@@ -43,6 +44,7 @@ class bib_collection(object):
         # get kind
         kind = os.path.basename(os.path.splitext(bibfile)[0])
         for k in entries:   entries[k]['kind'] = kind
+        self.kind = kind
         
         # get notes
         if notes:
@@ -57,23 +59,33 @@ class bib_collection(object):
         # make bib objects
         self.data = {k:bib(**(entries[k])) for k in entries}
 
-    def sort_keys(self,field):
+    def sort_keys(self,*fields,ascending=None):
         """
             Sort by the values of a particular field
+            ascendign default is True for all fields
+            
+            Ex: b.sort_keys('title','month',ascending=(True,False))
             
             returns list of keys corresponding to the entries in that order
         """
         
         # get keys and field values
-        dat = {'key':[],'value':[]}
+        dat = {f:[] for f in fields}
+        dat['key'] = []
         for k in self.data.keys():
-            d = getattr(self.data[k],field)
+            for f in fields:
+                dat[f].append(getattr(self.data[k],f))
             dat['key'].append(k)
-            dat['value'].append(d)
             
         # sort with pandas data frame
         dat = pd.DataFrame(dat)
-        dat.sort_values('value',inplace=True)
+        
+        if ascending is None:
+            ascending = [True for i in range(len(fields))]
+        
+        dat.sort_values(list(fields),
+                        ascending=ascending,
+                        inplace=True)
         return dat['key'].tolist()
     
 class bib(object):
