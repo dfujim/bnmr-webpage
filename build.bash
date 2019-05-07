@@ -1,5 +1,5 @@
 #!/bin/bash
 
-python3 bnmr_publications.py
-python3 triumf_experiments.py
+python3 publications.py
+python3 experiments.py
 jekyll build
