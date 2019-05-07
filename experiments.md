@@ -12,4 +12,4 @@ BNMR experiments at [TRIUMF](https://www.triumf.ca/)
 
 ---
 
-[Full List of Experiments](https://mis.triumf.ca/science/experiment/list.jsf?schedule=View+all&discipline=View+all&status=View+all).
+Full list of experiments [here](https://mis.triumf.ca/science/experiment/list.jsf?schedule=View+all&discipline=View+all&status=View+all).
