@@ -51,13 +51,31 @@ class bib_collection(object):
             
             for k in entries:
                 if k in df.index:
-                    access = False if df.loc[k,'openaccess'].upper() == 'FALSE' else True 
-                    entries[k]['openaccess'] = access
+                    entries[k]['openaccess'] = df.loc[k,'openaccess']
                     entries[k]['note'] = df.loc[k,'note']
             
         # make bib objects
         self.data = {k:bib(**(entries[k])) for k in entries}
 
+    def sort_keys(self,field):
+        """
+            Sort by the values of a particular field
+            
+            returns list of keys corresponding to the entries in that order
+        """
+        
+        # get keys and field values
+        dat = {'key':[],'value':[]}
+        for k in self.data.keys():
+            d = getattr(self.data[k],field)
+            dat['key'].append(k)
+            dat['value'].append(d)
+            
+        # sort with pandas data frame
+        dat = pd.DataFrame(dat)
+        dat.sort_values('value',inplace=True)
+        return dat['key'].tolist()
+    
 class bib(object):
     """ A simple class for holding bibliography entry info """
 
