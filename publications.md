@@ -31,13 +31,13 @@ Entries where the published version is
 
 ---
 
-### <a name="proceedings">Student Theses</a>
+### <a name="theses">Student Theses</a>
 
 {% include_relative _html/thesis.html %}
 
 ---
 
-### <a name="proceedings">News</a>
+### <a name="news">News</a>
 
 {% include_relative _html/news.html %}
 
