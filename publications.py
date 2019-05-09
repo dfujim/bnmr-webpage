@@ -7,6 +7,11 @@ from bibliography import bib_collection
 
 # source directory
 data_dir = 'data'
+out_dir = '_html'
+
+# make out directory 
+if not os.path.isdir(out_dir):   
+    os.makedirs(out_dir)
 
 # read bib files
 all_files = glob.glob(data_dir+'/*.bib')
@@ -26,5 +31,5 @@ for kind,pub,key in zip(kinds,publications,keys):
         lines.append("</li>")
     lines.append("</ol>")
     
-    with open("_html/%s.html"%kind, "w") as fid:
+    with open(out_dir+"/%s.html"%kind, "w") as fid:
         fid.write('\n'.join(lines))

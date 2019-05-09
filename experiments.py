@@ -3,6 +3,11 @@
 import requests
 import pandas as pd
 
+# make out directory 
+out_dir = '_html'
+if not os.path.isdir(out_dir):   
+    os.makedirs(out_dir)
+
 # public list of triumf experiments
 baseurl = "https://mis.triumf.ca/science/experiment/list.jsf"
 
@@ -113,7 +118,7 @@ def fix_fmt(string):
     return fixed
 
 # write the list as a html table a file
-with open("_html/triumf_experiments.html", "w") as fh:
+with open(out_dir+"/triumf_experiments.html", "w") as fh:
 
     # write the table
     fh.write(tabs(0) + "<center>\n")
