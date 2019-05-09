@@ -5,7 +5,7 @@ import bibtexparser
 import os
 import pandas as pd
 import numpy as np
-import latex2markdown
+import re
 
 class bib_collection(object):
     """
@@ -206,7 +206,8 @@ class bib(object):
     # ======================================================================= # 
     def _get_authors(self):
         """Format author string"""
-        return '<p>%s</p>' % (', '.join(self.get_author_list(initials=True)))
+        authors = ', '.join(self.get_author_list(initials=True))
+        return '<p>%s</p>' % (authors)
     
     # ======================================================================= # 
     def _get_arxiv(self):
@@ -253,12 +254,26 @@ class bib(object):
         
         title = self.title
         
-        # get markdown-formatted title
-        title = latex2markdown.LaTeX2Markdown(title).to_markdown()
+        # remove braces from non-mathmode regions
         
-        # remove braces
-        # ~ title = title.replace('}','')
-        # ~ title = title.replace('{','')
+        # get positions of all "$"
+        dollars_idx = [match.start() for match in re.finditer('\$',title)]
+        
+        # check for escaped dollars
+        dollars_idx = [d for d in dollars_idx if title[d-1] != '\\'] 
+            
+        # remove mathmode substrings
+        new_title = title
+        for i in range(0,len(dollars_idx),2):
+            rmstr = title[dollars_idx[i]:dollars_idx[i+1]+1]
+            new_title = new_title.replace(rmstr,'')
+        
+        # find things in braces
+        rmlist = re.findall('\{(.*?)\}',new_title)
+        
+        # remove from title
+        for r in rmlist:
+            title = title.replace('{%s}'%r,r)
         
         return '<p>"%s"</p>' % title
         
