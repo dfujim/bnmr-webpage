@@ -11,7 +11,7 @@ data_dir = 'data'
 # read bib files
 all_files = glob.glob(data_dir+'/*.bib')
 kinds = [os.path.splitext(os.path.basename(f))[0] for f in all_files]
-publications = [bib_collection(f) for f in all_files]
+publications = [bib_collection(f,os.path.join(data_dir,'bibnotes.csv')) for f in all_files]
 
 # sort by year, reverse chronological order
 keys = [b.sort_keys('year','month',ascending=(False,False)) for b in publications]

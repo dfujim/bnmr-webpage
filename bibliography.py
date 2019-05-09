@@ -4,6 +4,7 @@ import datetime
 import bibtexparser
 import os
 import pandas as pd
+import numpy as np
 
 class bib_collection(object):
     """
@@ -50,6 +51,7 @@ class bib_collection(object):
         if notes:
             df = pd.read_csv(notes)
             df.set_index('key',inplace=True)
+            df.replace(np.nan,'',regex=True,inplace=True)
             
             for k in entries:
                 if k in df.index:
@@ -101,6 +103,7 @@ class bib(object):
     urlbase_doi = "https://doi.org/"
     urlbase_arxiv = "https://arxiv.org/abs/"
 
+    # ======================================================================= # 
     def __init__(self,**kwargs):
             
         """ type of entry (article, proceeding, preprint, thesis) """
@@ -143,13 +146,12 @@ class bib(object):
         """ date published """
         self.year = kwargs.get("year", "0001")
         self.month = kwargs.get("month", "01")
-        
-    # number of coauthors
-    def n_authors(self):
-        return 1 + self.author.count(",")
-        
-    def format_thesis(self):
-        
+    
+    # ======================================================================= # 
+    def _format_thesis(self):
+        """
+            Format nice output for thesis
+        """
         fmt = "<p>" + self.author + "</p>\n"
         # title in quotation marks
         fmt += '<p>"' + self.title + '"</p>\n'
@@ -204,64 +206,107 @@ class bib(object):
             fmt += "</p>\n"
         return fmt
 
-    def format(self,kind='article'):
+    # ======================================================================= # 
+    def _format_article(self):
+        """
+            Format nice output for journal articles
+        """
 
-        if kind == "thesis":
-            return self.format_thesis()
-
-        fmt = "<p>" + self.author + "</p>\n"
+        # get author names
+        authors = ', '.join(self.get_author_list(initials=True))
+        lines = ["<p>%s</p>" % authors]
+        
         # title in quotation marks
-        fmt += '<p>"' + self.title + '"</p>\n'
+        lines.append('<p>"%s"</p>' % self.title)
+        
         # italic journal, bold volume, year in parentheses
         # only if there is a journal
-        if self.journal != None:
-            fmt += (
-                "<p><i>"
-                + self.journal
-                + "</i> <b>"
-                + self.volume
-                + "</b>, "
-                + self.pages
-                + " ("
-                + self.year
-                + ")"
-            )
-            if self.openaccess == True:
-                fmt += " " + self.icon_openaccess
-            if self.note != None:
-                fmt += " <mark>" + self.note + "</mark>"
-            fmt += "</p>\n"
+        if not self.journal is None:
+            jline = "<p><i>%s</i> <b>%s</b>, %s (%s)" % \
+                    (self.journal,self.volume,self.pages,self.year)
+                    
+            if self.openaccess:         openacc = " %s" % self.icon_openaccess
+            else:                       openacc = ""
+            
+            if self.note == "":         note = ""
+            else:                       note = " <mark>%s</mark>" % self.note
+            
+            lines.append(" ".join((jline,openacc,note,'</p>')))
+            
         # new paragraph if there is stuff to link to
-        if self.doi != None or self.arxiv != None:
-            fmt += "<p>"
-            # format the doi: icon + linked url
-            if self.doi != None:
-                fmt += (
-                    " "
-                    + self.icon_doi
-                    + ' <a href="'
-                    + self.urlbase_doi
-                    + self.doi
-                    + '">'
-                    + self.doi
-                    + "</a>"
-                )
-            # format the arxiv: icon + linked url
-            if self.arxiv != None:
-                fmt += (
-                    " "
-                    + self.icon_arxiv
-                    + ' <a href="'
-                    + self.urlbase_arxiv
-                    + self.arxiv
-                    + '">arXiv:'
-                    + self.arxiv
-                )
-                if self.arxiv_cat != None:
-                    fmt += " [" + self.arxiv_cat + "]"
-                fmt += "</a>"
-            fmt += "</p>\n"
-        # add newline if neeeded
-        if fmt.endswith("\n"):
-            return fmt
-        return fmt + "\n"
+        arxiv_line = ''
+        doi_line = ''
+        
+        # format the doi: icon + linked url
+        if not self.doi is None:
+            doi_line = ' %s <a href="%s%s">%s</a>'  % \
+                (self.icon_doi,self.urlbase_doi,self.doi,self.doi)
+            
+        # format the arxiv: icon + linked url
+        if not self.arxiv is None:
+            arxiv_line = ' %s <a href="%s%s">arXiv:%s' % \
+                (self.icon_arxiv,self.urlbase_arxiv,self.arxiv,self.arxiv)
+            
+            if not self.arxiv_cat is None:
+                arxiv_line += " [%s]" % self.arxiv_cat
+        
+            arxiv_line += "</a>"
+            
+        lines.append(''.join(("<p>",doi_line,arxiv_line,"</p>")))
+
+        fmt = '\n'.join(lines)
+        return fmt+'\n'
+        
+    # ======================================================================= # 
+    def get_author_list(self,initials=True):
+        """
+            Make a list of author names. Assume bibtex entry style: 
+            
+                Author names split by "and"
+                If ',' in name, format assumed to be "last, first"
+                otherwise format assumed to be "first last"
+            
+            initials: if true, contract first name to initials
+        """
+    
+        # get authors 
+        author_string = self.author
+        
+        # get list
+        authors = author_string.split('and')
+        
+        # get author in [first],last order
+        for i,aut in enumerate(authors):
+            
+            # get list of list(first) names, and last name
+            if ',' in aut:
+                name = aut.split(',')[::-1]
+                name[0] = name[0].split()
+            else:
+                name = aut.split()
+                name = [name[:-1],name[-1]]
+                
+            # remove spaces
+            name[-1] = name[-1].strip()
+                
+            # Make first names initials
+            if initials:
+                first = [f.upper()[0] for f in name[0]]
+                name[0] = '. '.join(first)+'.'
+            else:
+                name[0] = ' '.join(name[0]) 
+            
+            # make full name
+            authors[i] = ' '.join(name)
+                
+        return authors
+            
+    # ======================================================================= # 
+    def format(self,kind='article'):
+        """
+            Format nice output control script
+        """
+        if kind == "thesis":
+            return self._format_thesis()
+        else:
+            return self._format_article()
