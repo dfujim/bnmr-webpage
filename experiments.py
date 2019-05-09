@@ -34,21 +34,18 @@ html = requests.get(url).content
 df_list = pd.read_html(html)
 df = df_list[-1]
 
-# print(df)
-# df.to_csv('my data.csv')
-
 # drop NaN containing rows (i.e., ones with missing elements)
 df = df.dropna()
 
 # tables can be accessed by the column names:
 # 'Number', 'Title', 'Spokespersons'
-# print(df['Spokespersons'])
 
 # list of our experiments
 with open('data/triumf_experiments.dat','r') as fid:
     experiments = fid.readlines()
 
 # sort and reorder
+experiments = [e.strip() for e in experiments]
 experiments = sorted(experiments, reverse=True)
 
 def md_table_row(number, title, spokespersons):
@@ -65,7 +62,6 @@ def md_table_row(number, title, spokespersons):
     row = "| " + exp_link + " | " + title + " |"
     return row
 
-
 def html_table_row(number, title, spokespersons):
     # make the link in markdown
     exp_url = "https://mis.triumf.ca/science/experiment/view/" + number
@@ -77,14 +73,12 @@ def html_table_row(number, title, spokespersons):
     row += "</tr>"
     return row
 
-
 # conveniently print n tabs
 def tabs(num_tabs):
     tab_str = ""
     for i in range(num_tabs):
         tab_str += "\t"
     return tab_str
-
 
 def html_table_row_tabs(number, title, spokespersons, tabs):
     # make the link in markdown
@@ -96,7 +90,6 @@ def html_table_row_tabs(number, title, spokespersons, tabs):
     row += tabs + "\t<td>" + title + "</td>\n"
     row += tabs + "</tr>\n"
     return row
-
 
 # fix the formatting of isotopes & chemical compounds
 def fix_fmt(string):
@@ -119,7 +112,6 @@ def fix_fmt(string):
 
     return fixed
 
-
 # write the list as a html table a file
 with open("_html/triumf_experiments.html", "w") as fh:
 
@@ -138,11 +130,8 @@ with open("_html/triumf_experiments.html", "w") as fh:
     for e in experiments:
         for n, t, s in zip(df["Number"], df["Title"], df["Spokespersons"]):
             if e == n:
-                # row = md_table_row(n, t, s)
-                # row = tabs(3) + html_table_row(n, t, s)
                 row = html_table_row_tabs(n, fix_fmt(t), s, tabs(3))
                 fh.write(row)
     fh.write(tabs(2) + "</tbody>\n")
-
     fh.write(tabs(1) + "\t</table>\n")
     fh.write(tabs(0) + "</center>\n")
