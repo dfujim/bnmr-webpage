@@ -22,7 +22,7 @@ for kind,pub,key in zip(kinds,publications,keys):
     
     for entry in key:
         lines.append("<li>")
-        lines.append(pub.data[entry].format())
+        lines.append(pub.data[entry].format(kind))
         lines.append("</li>")
     lines.append("</ol>")
     

@@ -170,14 +170,8 @@ class bib(object):
             
             lines.append(" ".join((jline,openacc,note,'</p>')))
             
-        # format the arxiv: icon + linked url
-        arxiv_line = self._get_arxiv()
-        
-        # format the doi: icon + linked url
-        doi_line = self._get_doi()    
-        
-        # make new paragraph
-        lines.append(''.join(("<p>",doi_line,arxiv_line,"</p>")))
+        # format the doi, arxiv
+        lines.append("<p>%s %s</p>" % (self._get_doi(),self._get_arxiv()))
 
         fmt = '\n'.join(lines)
         return fmt+'\n'
@@ -235,7 +229,9 @@ class bib(object):
     # ======================================================================= # 
     def _get_note(self):
         """Format note string"""
-        if self.note != "": return " <mark>%s</mark>" % self.note
+        
+        if self.note != '' and self.note is not None: 
+            return " <mark>%s</mark>" % self.note
         return ""
     
     # ======================================================================= # 
