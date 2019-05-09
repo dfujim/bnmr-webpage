@@ -1,5 +1,9 @@
 
 
+.MathJax {
+   font-size: 0.35em !important;
+}
+
 html {
    color: black;
    background: rgb(64,64,64);
