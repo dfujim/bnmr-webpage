@@ -2,6 +2,7 @@
 
 import requests
 import pandas as pd
+import os
 
 # make out directory 
 out_dir = '_html'
