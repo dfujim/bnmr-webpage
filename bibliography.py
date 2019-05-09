@@ -148,76 +148,16 @@ class bib(object):
         self.month = kwargs.get("month", "01")
     
     # ======================================================================= # 
-    def _format_thesis(self):
-        """
-            Format nice output for thesis
-        """
-        fmt = "<p>" + self.author + "</p>\n"
-        # title in quotation marks
-        fmt += '<p>"' + self.title + '"</p>\n'
-        fmt += (
-            "<p><i>"
-            + self.degree
-            + " "
-            + self.kind
-            + "</i> ("
-            + self.school
-            + ", "
-            + self.address
-            + ", "
-            + self.year
-            + ")"
-        )
-        
-        # add openaccess symbol
-        if self.openaccess:
-            fmt += " " + self.icon_openaccess
-        fmt += "</p>\n"
-    
-        # new paragraph if there is stuff to link to
-        if self.doi != None or self.arxiv != None:
-            fmt += "<p>"
-            # format the doi: icon + linked url
-            if self.doi != None:
-                fmt += (
-                    " "
-                    + self.icon_doi
-                    + ' <a href="'
-                    + self.urlbase_doi
-                    + self.doi
-                    + '">'
-                    + self.doi
-                    + "</a>"
-                )
-            # format the arxiv: icon + linked url
-            if self.arxiv != None:
-                fmt += (
-                    " "
-                    + self.icon_arxiv
-                    + ' <a href="'
-                    + self.urlbase_arxiv
-                    + self.arxiv
-                    + '">arXiv:'
-                    + self.arxiv
-                )
-                if self.arxiv_cat != None:
-                    fmt += " [" + self.arxiv_cat + "]"
-                fmt += "</a>"
-            fmt += "</p>\n"
-        return fmt
-
-    # ======================================================================= # 
     def _format_article(self):
         """
             Format nice output for journal articles
         """
 
         # get author names
-        authors = ', '.join(self.get_author_list(initials=True))
-        lines = ["<p>%s</p>" % authors]
+        lines = [self._get_authors()]
         
         # title in quotation marks
-        lines.append('<p>"%s"</p>' % self.title)
+        lines.append(self._get_title())
         
         # italic journal, bold volume, year in parentheses
         # only if there is a journal
@@ -225,37 +165,89 @@ class bib(object):
             jline = "<p><i>%s</i> <b>%s</b>, %s (%s)" % \
                     (self.journal,self.volume,self.pages,self.year)
                     
-            if self.openaccess:         openacc = " %s" % self.icon_openaccess
-            else:                       openacc = ""
-            
-            if self.note == "":         note = ""
-            else:                       note = " <mark>%s</mark>" % self.note
+            openacc = self._get_openaccess()
+            note = self._get_note()
             
             lines.append(" ".join((jline,openacc,note,'</p>')))
             
-        # new paragraph if there is stuff to link to
-        arxiv_line = ''
-        doi_line = ''
+        # format the arxiv: icon + linked url
+        arxiv_line = self._get_arxiv()
         
         # format the doi: icon + linked url
-        if not self.doi is None:
-            doi_line = ' %s <a href="%s%s">%s</a>'  % \
-                (self.icon_doi,self.urlbase_doi,self.doi,self.doi)
-            
-        # format the arxiv: icon + linked url
-        if not self.arxiv is None:
-            arxiv_line = ' %s <a href="%s%s">arXiv:%s' % \
-                (self.icon_arxiv,self.urlbase_arxiv,self.arxiv,self.arxiv)
-            
-            if not self.arxiv_cat is None:
-                arxiv_line += " [%s]" % self.arxiv_cat
+        doi_line = self._get_doi()    
         
-            arxiv_line += "</a>"
-            
+        # make new paragraph
         lines.append(''.join(("<p>",doi_line,arxiv_line,"</p>")))
 
         fmt = '\n'.join(lines)
         return fmt+'\n'
+    
+    # ======================================================================= # 
+    def _format_thesis(self):
+        """
+            Format nice output for thesis
+        """
+        lines = [self._get_authors()]
+        
+        # title in quotation marks
+        lines.append(self._get_title())
+        
+        # degree and openaccess
+        lines.append("<p><i>%s</i> (%s, %s, %s) %s</p>" % \
+                                            (self.degree,self.school,
+                                             self.address,self.year,
+                                             self._get_openaccess()))
+        
+        lines.append('<p>%s %s</p>' % (self._get_doi(),self._get_arxiv()))
+        
+        return '\n'.join(lines)
+
+    # ======================================================================= # 
+    def _get_authors(self):
+        """Format author string"""
+        return '<p>%s</p>' % (', '.join(self.get_author_list(initials=True)))
+    
+    # ======================================================================= # 
+    def _get_arxiv(self):
+        """Format arxiv string and linking"""
+        
+        if not self.arxiv is None:
+            line = ' %s <a href="%s%s">arXiv:%s' % \
+                (self.icon_arxiv,self.urlbase_arxiv,self.arxiv,self.arxiv)
+            
+            if not self.arxiv_cat is None:
+                line += " [%s]" % self.arxiv_cat
+        
+            line += "</a>"
+            return line
+        return ''
+    
+    # ======================================================================= # 
+    def _get_doi(self):
+        """Format doi string and linking"""
+        if not self.doi is None:
+            return ' %s <a href="%s%s">%s</a>'  % ( self.icon_doi,
+                                                    self.urlbase_doi,
+                                                    self.doi,
+                                                    self.doi)
+        return ''
+    
+    # ======================================================================= # 
+    def _get_note(self):
+        """Format note string"""
+        if self.note != "": return " <mark>%s</mark>" % self.note
+        return ""
+    
+    # ======================================================================= # 
+    def _get_openaccess(self):
+        """Format openaccess symbol"""
+        if self.openaccess: return " %s" % self.icon_openaccess
+        return ""
+    
+    # ======================================================================= # 
+    def _get_title(self):
+        """Format title string"""
+        return '<p>"%s"</p>' % self.title
         
     # ======================================================================= # 
     def get_author_list(self,initials=True):
