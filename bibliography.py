@@ -5,6 +5,7 @@ import bibtexparser
 import os
 import pandas as pd
 import numpy as np
+import latex2markdown
 
 class bib_collection(object):
     """
@@ -187,9 +188,15 @@ class bib(object):
         lines.append(self._get_title())
         
         # degree and openaccess
-        lines.append("<p><i>%s</i> (%s, %s, %s) %s</p>" % \
-                                            (self.degree,self.school,
-                                             self.address,self.year,
+        if not self.address:    address = ''
+        else:                   address = self.address+', '
+        
+        if not self.school:     school = ''
+        else:                   school = self.school+', '
+        
+        lines.append("<p><i>%s</i> (%s%s%s) %s</p>" % \
+                                            (self.degree,school,
+                                             address,self.year,
                                              self._get_openaccess()))
         
         lines.append('<p>%s %s</p>' % (self._get_doi(),self._get_arxiv()))
@@ -243,7 +250,17 @@ class bib(object):
     # ======================================================================= # 
     def _get_title(self):
         """Format title string"""
-        return '<p>"%s"</p>' % self.title
+        
+        title = self.title
+        
+        # get markdown-formatted title
+        title = latex2markdown.LaTeX2Markdown(title).to_markdown()
+        
+        # remove braces
+        title = title.replace('}','')
+        title = title.replace('{','')
+        
+        return '<p>"%s"</p>' % title
         
     # ======================================================================= # 
     def get_author_list(self,initials=True):
