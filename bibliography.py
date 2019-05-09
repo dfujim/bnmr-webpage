@@ -257,8 +257,8 @@ class bib(object):
         title = latex2markdown.LaTeX2Markdown(title).to_markdown()
         
         # remove braces
-        title = title.replace('}','')
-        title = title.replace('{','')
+        # ~ title = title.replace('}','')
+        # ~ title = title.replace('{','')
         
         return '<p>"%s"</p>' % title
         
